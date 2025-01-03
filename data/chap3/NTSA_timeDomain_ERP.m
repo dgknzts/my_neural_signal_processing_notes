@@ -21,8 +21,8 @@ noiseamp = 2; % noise standard deviation
 
 
 % create signal
-swave  = cos( );
-gausw  = exp( 4*log(2)*(time-gpeakt) / gwidth^2 );
+swave  = cos(2*pi*sfreq*time);
+gausw  = exp( -4*log(2)*(time-gpeakt).^2 / gwidth^2 );
 signal = swave .* gausw;
 
 % create data and multiple channels plus noise

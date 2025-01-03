@@ -176,7 +176,7 @@ load('sampleEEGdata.mat');
 [EEG.cardata1,EEG.cardata2] = deal( zeros(size(EEG.data)) );
 % deal is helpful to initial multiple variables
 
-%% via a double-loop
+% via a double-loop
 
 for triali=1:EEG.trials
     for ti=1:EEG.pnts
@@ -186,11 +186,12 @@ for triali=1:EEG.trials
     end
 end
 
-%% via bsxfun
-
+% via bsxfun
+% same method but different function
 EEG.cardata2 = bsxfun(@minus,EEG.data,mean(EEG.data,1));
-
-%% compare them 
+% first input: opearation
+% second and third input: applying that function on those two data
+% compare them 
 
 chan2plot = 'poz';
 
@@ -202,7 +203,7 @@ figure(1), clf, hold on
 h(1) = plot(EEG.times,mean(EEG.data(chanidx,:,:),3),'r');
 h(2) = plot(EEG.times,mean(EEG.cardata1(chanidx,:,:),3),'k');
 h(3) = plot(EEG.times,mean(EEG.cardata2(chanidx,:,:),3),'b');
-
+% different references should be look the similar. this is the case here.
 legend({'Earlobe';'Average (loop)';'Average (bsxfun)'})
 
 % adjust line widths and markers
@@ -212,3 +213,122 @@ set(h(2),'marker','s')
 % adjust general plot settings
 set(gca,'xlim',[-300 1200])
 xlabel('Time (ms)'), ylabel('Voltage (\muV)')
+
+%% Butterfly plot and topo-variance time series
+clear
+load('sampleEEGdata.mat')
+
+figure(1), clf
+
+% make a butterfly plot
+subplot(311)
+plot(EEG.times,squeeze(mean(EEG.data,3)),'linew',2)
+set(gca,'xlim',[-500 1300])
+title('Butterfly plot')
+xlabel('Time (s)'), ylabel('Voltage (\muV)')
+grid on
+title('Earlobe reference')
+
+
+% compute the average reference
+
+% the fancy way...
+data = bsxfun(@minus,EEG.data,mean(EEG.data,1));
+
+
+subplot(312)
+plot(EEG.times,squeeze(mean(data,3)),'linew',2)
+set(gca,'xlim',[-500 1300])
+title('Butterfly plot')
+xlabel('Time (s)'), ylabel('Voltage (\muV)')
+grid on
+title('Average reference')
+
+
+% compute the variance time series
+% idea behind the plotting varience is being able to show the
+% data with only single lines.
+
+% variance for both earlobe and average reference
+var_ts_ER = var( mean(EEG.data,3) );
+var_ts_AR = var( mean(data,3) );
+
+subplot(313), hold on
+plot(EEG.times,var_ts_ER,'rs-','linew',2)
+plot(EEG.times,var_ts_AR,'k-','linew',2)
+
+set(gca,'xlim',[-500 1300])
+xlabel('Time (s)'), ylabel('Voltage (\muV)')
+grid on
+title('Topographical variance time series')
+
+%% Topography time series
+clear
+load('sampleEEGdata.mat')
+
+% time points for topographies
+times2plot = -200:50:800; % in ms
+
+% convert to indices
+tidx = zeros(size(times2plot));
+for i=1:length(tidx)
+    [~,tidx(i)] = min(abs( EEG.times-times2plot(i) ));
+end
+
+% or:
+% similar to the upper method but upper is faster!
+tidx = dsearchn(EEG.times',times2plot'); % they shoud be all column vectors
+
+%topoplot time series at exact time point
+
+figure(1), clf
+
+% optional: redo with average reference
+%EEG.data = bsxfun(@minus, EEG.data, mean(EEG.data,1));
+% overall amplitudes are lower so color rescaling is neccasary
+
+
+% define subplot geometry
+subgeomR = ceil(sqrt(length(tidx))); % this is basically for our figure
+subgeomC = ceil(length(tidx)/subgeomR); % predifining how many row and column
+% we need in the figure
+
+for i=1:length(tidx)
+    subplot( subgeomR,subgeomC,i )
+    topoplotIndie( mean(EEG.data(:,tidx(i),:),3),EEG.chanlocs );
+    % we can also create the ERP before the loop than specify time
+    % indices within that erp. which will be faster
+    set(gca,'clim',[-1 1]*10)
+    title([ num2str(times2plot(i)) ' ms' ])
+end
+
+% topoplot time series at average around time point
+% individual time points are little bit noisy.
+% so we should average in a time point window
+% for example for time 50ms we choose a window between 40-60 ms and
+% take average of it
+
+% window size
+twin = 10; % in ms; half of window 
+% it is in ms because we take ratio of it compared to sampling rate
+
+% convert to indices
+twinidx = round(twin/(1000/EEG.srate));
+
+figure(2), clf
+for i=1:length(tidx)
+    subplot( subgeomR,subgeomC,i )
+    
+    % time points to average together
+    times2ave = tidx(i)-twinidx : tidx(i)+twinidx;
+    
+    % draw the topomap
+    topoplotIndie( mean(mean(EEG.data(:,times2ave,:),3),2),EEG.chanlocs,'electrodes','off','numcontour',0 );
+    set(gca,'clim',[-1 1]*10) % important for showing all topos in the same color limits
+    title([ num2str(times2plot(i)) ' ms' ])
+end
+
+
+%% Important note: Some analysis methods are sensitive to some filters like
+% in the chap 3 project2 solutions. peak selection differs because of the
+% filter. C

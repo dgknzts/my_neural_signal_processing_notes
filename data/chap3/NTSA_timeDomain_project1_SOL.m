@@ -140,13 +140,12 @@ win = round( win / (1000/EEG.srate) );
 [~,erpMaxTime] = max(erp(pospeaktime(1):pospeaktime(2)));
 
 % adjust ERP timings
-erpMinTime = erpMinTime+negpeaktime(1)-1;
-erpMaxTime = erpMaxTime+pospeaktime(1)-1;
+erpMinTime = erpMinTime+negpeaktime(1) - 1;
+erpMaxTime = erpMaxTime+pospeaktime(1) - 1;
 
 % now find average values around the peak time
 erpMin = mean( erp(erpMinTime-win:erpMinTime+win) );
 erpMax = mean( erp(erpMaxTime-win:erpMaxTime+win) );
-
 
 % ERP timings
 erpMinTime = EEG.times( erpMinTime );
@@ -155,7 +154,6 @@ erpMaxTime = EEG.times( erpMaxTime );
 % get results (peak-to-peak voltage and latency)
 erpP2P = erpMax - erpMin;
 erpP2Plat = erpMaxTime - erpMinTime;
-
 
 %%%% then for low-pass filtered ERP
 
