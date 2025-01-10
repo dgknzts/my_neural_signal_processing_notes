@@ -138,3 +138,136 @@ title([ 'Dot product of signal and sine waves (' num2str(theta) ' rad. offset)' 
 % What is the effect on the spectrum of dot products?
 % It changes the magnitude of the signal. In different directions.
 % Related to the circular angle of the pi. 
+
+%% complex-valued sine wave
+
+% general simulation parameters
+srate = 500; % sampling rate in Hz
+time  = 0:1/srate:2; % time in seconds
+
+% sine wave parameters
+freq = 5;    % frequency in Hz
+ampl = 2;    % amplitude in a.u.
+phas = pi; % phase in radians
+
+% generate the complex sine wave.
+csw = ampl*exp(1i*(2*pi*freq*time + phas));
+
+% plot in 2D
+figure(5), clf
+subplot(211)
+plot(time,real(csw), time,imag(csw),'linew',2)
+xlabel('Time (sec.)'), ylabel('Amplitude')
+title('Complex sine wave projections')
+legend({'real';'imag'})
+% plot in 3D
+subplot(212)
+plot3(time,real(csw),imag(csw),'k','linew',3)
+xlabel('Time (sec.)'), ylabel('real part'), zlabel('imag. part')
+set(gca,'ylim',[-1 1]*ampl*3,'zlim',[-1 1]*ampl*3)
+axis square
+rotate3d on
+
+%% complex dot product with wavelet
+
+% phase of signal
+theta = 1*pi*3;
+% simulation parameters
+srate = 1000;
+time  = -1:1/srate:1;
+
+% here is the signal (don't change this line)
+signal = sin(2*pi*5*time + theta) .* exp( (-time.^2) / .1);
+% sine wave frequencies (Hz)
+sinefrex = 2:.5:10;
+
+% plot signal
+figure(4), clf
+subplot(211)
+plot(time,signal,'k','linew',3)
+xlabel('Time (sec.)'), ylabel('Amplitude (a.u.)')
+title('Signal')
+
+dps = zeros(size(sinefrex));
+amp = 1;
+phase = pi/4;
+for fi=1:length(dps)
+
+    % create a real-valued sine wave. Note that the amplitude should be 1 and the phase should be 0
+    sinew(fi,:) = amp * exp(1i*2*pi*time*sinefrex(fi) + 1i*phase);
+
+    % compute the dot product between sine wave and signal
+    % normalize by the number of time points
+    dps(fi) = sum(sinew(fi,:).* signal) / length(time);
+end
+% Very similar to fourier transform, only diff is sine waves are complex in fourier.
+% and plot
+subplot(212)
+stem(sinefrex,abs(dps),'k','linew',3,'markersize',10,'markerfacecolor','w')
+set(gca,'xlim',[sinefrex(1)-.5 sinefrex(end)+.5], 'ylim', [-.2 .2])
+xlabel('Sine wave frequency (Hz)')
+ylabel('Dot product (signed magnitude)')
+title([ 'Dot product of signal and sine waves (' num2str(theta) ' rad. offset)' ])
+
+%% A movie showing why complex sine waves are phase-invariant
+
+% no need to change the code; just run and enjoy!
+
+% create complex sine wave
+csw = exp( 1i*2*pi*5*time );
+rsw = cos(    2*pi*5*time );
+
+% specify range of phase offsets for signal
+phases = linspace(0,7*pi/2,100);
+
+
+% setup the plot
+figure(6), clf
+subplot(223)
+ch = plot(0,0,'ro','linew',2,'markersize',10,'markerfacecolor','r');
+set(gca,'xlim',[-.2 .2],'ylim',[-.2 .2])
+grid on, hold on, axis square
+plot(get(gca,'xlim'),[0 0],'k','linew',2)
+plot([0 0],get(gca,'ylim'),'k','linew',2)
+xlabel('Cosine axis')
+ylabel('Sine axis')
+title('Complex plane')
+
+% and then setup the plot for the real-dot product axis
+subplot(224)
+rh = plot(0,0,'ro','linew',2,'markersize',10,'markerfacecolor','r');
+set(gca,'xlim',[-.2 .2],'ylim',[-.2 .2],'ytick',[])
+grid on, hold on, axis square
+plot(get(gca,'xlim'),[0 0],'k','linew',2)
+plot([0 0],get(gca,'ylim'),'k','linew',2)
+xlabel('Real axis')
+title('Real number line')
+
+
+for phi=1:length(phases)
+
+    % create signal
+    signal = sin(2*pi*5*time + phases(phi)) .* exp( (-time.^2) / .1);
+
+    % compute complex dot product
+    cdp = sum( signal.*csw ) / length(time);
+
+    % compute real-valued dot product
+    rdp = sum( signal.*rsw ) / length(time);
+
+    % plot signal and real part of sine wave
+    subplot(211)
+    plot(time,signal, time,rsw,'linew',2)
+    title('Signal and sine wave over time')
+
+    % plot complex dot product
+    subplot(223)
+    set(ch,'XData',real(cdp),'YData',imag(cdp))
+
+    % draw normal dot product
+    subplot(224)
+    set(rh,'XData',rdp)
+
+    % wait a bit
+    pause(.1)
+end
