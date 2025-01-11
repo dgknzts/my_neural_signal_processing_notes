@@ -164,3 +164,147 @@ xlabel('Frequency (Hz)'), ylabel('Phase (rad.)')
 % outside of the 6 hz we dont have any amplitudes so when amplitude is 0 
 % phase is undefined and computer just produce random numbers for undefined
 % phases. 
+
+%% scaling of Fourier coefficients
+%%% The goal of this section of code is to understand the necessity and logic
+%   behind the two normalization factors that get the Fourier coefficients
+%   in the same scale as the original data.
+
+
+% create the signal
+srate  = 1000; % hz
+time   = (0:3*srate-1)/srate; % time vector in seconds
+pnts   = length(time); % number of time points
+signal = 2.5 * sin( 2*pi*4*time );
+
+
+% prepare the Fourier transform
+fourTime = (0:pnts-1)/pnts;
+fCoefs   = zeros(size(signal));
+
+for fi=1:pnts
+    % create complex sine wave and compute dot product with signal
+    csw = exp( -1i*2*pi*(fi-1)*fourTime );
+    fCoefs(fi) = sum( signal.*csw );
+end
+
+% extract amplitudes
+ampls = abs(fCoefs) / (pnts/2);
+% dividing by half of the number of points is showing us the ground truth.
+
+% compute frequencies vector
+hz = linspace(0,srate/2,floor(pnts/2)+1);
+
+figure(11), clf
+stem(hz,ampls(1:length(hz)),'ks-','linew',3,'markersize',10,'markerfacecolor','w')
+set(gca,'xlim',[0 10])
+xlabel('Frequency (Hz)'), ylabel('Amplitude (a.u.)')
+%% DC reflects the mean offset
+figure(12), clf
+% NOTE: below is the same signal with (1) small, (2) no, (3) large DC
+%       Is the amplitude spectrum accurate at 0 Hz???
+signalX1 = fft(signal+2)             / length(pnts);
+signalX2 = fft(signal-mean(signal))  / length(pnts);
+signalX3 = fft(signal+10)            / length(pnts);
+
+% plot signals in the time domain
+subplot(211), hold on
+plot(ifft(signalX1)*pnts,'bo-')
+plot(ifft(signalX2)*length(signal),'rd-')
+plot(ifft(signalX3)*pnts,'k*-')
+xlabel('Tme (ms)'), ylabel('Amplitude')
+
+% plot signals in the frequency domain
+subplot(212)
+plot(hz,2*abs(signalX1(1:length(hz))),'bo-','linew',2,'markersize',8), hold on
+plot(hz,2*abs(signalX2(1:length(hz))),'rd-','linew',2,'markersize',8)
+plot(hz,2*abs(signalX3(1:length(hz))),'k*-','linew',2,'markersize',8)
+
+xlabel('Frequencies (Hz)'), ylabel('Amplitude')
+legend({'+2 mean';'de-meaned';'+10 mean'})
+set(gca,'xlim',[0 10])
+
+%% Spectral analysis of resting-state EEG
+% The goal of this cell is to plot a power spectrum of resting-state EEG data.
+
+clear
+load EEGrestingState.mat
+% create a time vector that starts from 0
+npnts = length(eegdata);
+time  = (0:npnts-1)/srate;
+
+% plot the time-domain signal
+figure(13), clf
+plot(time,eegdata)
+xlabel('Time (s)'), ylabel('Voltage (\muV)')
+zoom on
+
+
+% static spectral analysis
+hz = linspace(0,srate/2,floor(npnts/2)+1);
+ampl = abs(fft(eegdata)/npnts);
+ampl(2:end-1) = 2*ampl(2:end-1);
+powr = ampl.^2;
+
+figure(14), clf, hold on
+plot(hz,ampl(1:length(hz)),'k','linew',2)
+plot(hz,powr(1:length(hz)),'r','linew',2)
+
+xlabel('Frequency (Hz)')
+ylabel('Amplitude or power')
+legend({'Amplitude';'Power'})
+set(gca,'xlim',[0 30])
+
+
+%%% When we transform the amp into power, large values appears to be
+%%% stronger and small ones weaker. Amp spectrum highlight the more subtle
+%%% features, Power spectrum highlights the more prominent features.
+%% Quantify alpha power over the scalp
+clear
+load restingstate64chans.mat
+% These data comprise 63 "epochs" of resting-state data. Each epoch is a
+%   2-second interval cut from ~2 minutes of resting-state.
+% The goal is to compute the power spectrum of each 2-second epoch
+%   separately, then average together.
+%   Then, extract the average power from 8-12 Hz (the "alpha band") and
+%   make a topographical map of the distribution of this power.
+
+
+% convert to double-precision
+EEG.data = double(EEG.data);
+
+% two ways to get the fft for all chan and trials
+% 1st way is the shortests
+chanpowr = (2* abs(fft(EEG.data, [], 2) / EEG.pnts)).^2; % we didnt touch the second argument but
+% we selected the third argument which is the dimension to take the fft
+% over !
+% 2nd way
+chanpowr2 = zeros(size(EEG.data));
+for chani = 1:length(EEG.data(:,1,1))
+    for triali = 1:length(EEG.data(1,1,:))
+        chanpowr2(chani, :, triali) = (2* abs(fft(EEG.data(chani, : , triali))/ EEG.pnts)).^2;
+    end
+end
+% then average over trials
+chanpowr = mean(chanpowr,3);
+
+% vector of frequencies
+hz = linspace(0,EEG.srate/2,floor(EEG.pnts/2)+1);
+% do some plotting
+% plot power spectrum of all channels
+figure(15), clf
+plot(hz,chanpowr(:,1:length(hz)),'linew',2)
+xlabel('Frequency (Hz)'), ylabel('Power (\muV)')
+set(gca,'xlim',[0 30],'ylim',[0 50])
+%% now to extract alpha power
+% boundaries in hz
+alphabounds = [8 12];
+% convert to indices
+freqidx = dsearchn(hz', alphabounds');
+% extract average power
+alphapower = mean(chanpowr(:,freqidx(1):freqidx(2)),2);
+% and plot
+figure(16), clf
+topoplotIndie(alphapower,EEG.chanlocs,'numcontour',0);
+set(gca,'clim',[0 5])
+colormap hot
