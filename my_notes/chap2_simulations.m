@@ -118,47 +118,55 @@ set(gca,'xlim',[min(time-0.1) max(time) + 0.1],'ylim',[-1.1 1.1]*ampl);
 xlabel('Time (ms)')
 title('My first sine wave plot! Mom will be so proud!')
 
-%% the sum of sine waves can appear like a complicated time series
+%% The sum of sine waves can appear like a complicated time series
 
-% create a few sine waves and sum
+% Create a few sine waves and sum
 
-% define a sampling rate
+% Define a sampling rate
 srate = 1000;
 
-% list some frequencies
+% List some frequencies
 frex = [ 4.8   6   7.5 ];
+labels = ['Inner' 'Middle' 'Outer'];
 
-% list some random amplitudes... make sure there are the same number of
+% List some random amplitudes... make sure there are the same number of
 % amplitudes as there are frequencies!
-amplit = [5 2 5 ];
+amplit = [5 5 5 ];
 
-% phases... list some random numbers between -pi and pi
-phases = [  pi/7  pi/8  pi  pi/2  -pi/4 ];
+% Phases... list some random numbers between -pi and pi
+phases = [2*pi 2*pi 2*pi]; 
 
-% define time...
-time = -1:1/srate:1;
+% Define time
+time = 0:1/srate:1;
 
-
-% now we loop through frequencies and create sine waves
+% Now we loop through frequencies and create sine waves
 sine_waves = zeros(length(frex),length(time));
-for fi=1:length(frex)
+for fi = 1:length(frex)
     sine_waves(fi,:) = amplit(fi) * sin(2*pi*time*frex(fi) + phases(fi));
+    % Normalize to range [0.5, 1]
+    sine_waves(fi,:) = (sine_waves(fi,:) - min(sine_waves(fi,:))) / (max(sine_waves(fi,:)) - min(sine_waves(fi,:))) * 0.5 + 0.5;
 end
 
-% now plot the result
+% Plot the sum of sine waves
 figure(2), clf
-plot(time,sum(sine_waves))
-title('sum of sine waves')
+plot(time, sum(sine_waves))
+title('Sum of sine waves')
 xlabel('Time (s)'), ylabel('Amplitude (arb. units)')
 
-
-% now plot each wave separately
+% Plot each wave separately
 figure(3), clf
-for fi=1:length(frex)
-    subplot(length(frex),1,fi)
-    plot(time, sine_waves(fi,:))
-    axis([ time([1 end]) -max(amplit) max(amplit) ])
+colors = ["#F4A261", "#1C646D", "#38184C"]; % Define custom colors for the sine waves
+arc_labels = ["Inner Arc", "Middle Arc", "Outer Arc"]; % Define arc labels for each wave
+for fi = 1:length(frex)
+    subplot(length(frex), 1, fi)
+    plot(time, sine_waves(fi,:), 'Color', colors(fi), 'LineWidth', 1.5)
+    axis([time([1 end]) 0.5 1])
+    ylabel('Contrast')
+    yticks([0.5 0.75 1]) % Manually set x-axis ticks
+    title(sprintf('%s: %.1f Hz (f%d)', arc_labels(fi), frex(fi), fi)) % Add informative title with arc labels
 end
+xlabel('Time (s)')
+
 
 %% Gaussian
 
