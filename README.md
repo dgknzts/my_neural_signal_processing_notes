@@ -2,7 +2,7 @@
 
 This repository serves as a personal resource for EEG data analysis. It is designed to help me quickly revisit and apply various concepts related to neural signal processing whenever needed. 
 
-If I need to perform or review specific techniques, I can refer to the **how_to** section for practical guidance and explanations.
+If I need to perform or review specific techniques, I can refer to the **how_to** section for practical or theoretical guidance and explanations.
 
 ---
 
