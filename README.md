@@ -17,6 +17,7 @@ All of the codes in this repository are inspired by the content provided by **Mi
 ## Repository Structure
 - **`src/`**: Contains practice scripts and sample datasets used during the course to apply neural signal processing techniques.
 - **`how_to/`**: Provides scripts and code snippets demonstrating how to implement specific EEG and signal processing concepts. Each script focuses on a different technique and includes explanations on how and why it is used.
-- **`README.md`**: An overview of this repository, including resources, structure, and usage guidelines.
+- **`README.md`**: This file
+
 
 ---
