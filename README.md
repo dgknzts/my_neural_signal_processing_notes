@@ -10,7 +10,7 @@ If I need to perform or review specific techniques, I can refer to the **how_to*
 All of the codes in this repository are inspired by the content provided by **Mike X. Cohen**. For a deeper understanding of neural signal processing, I recommend exploring the following resources:
 
 - **Book:** Cohen, M. X. (2014). *Analyzing Neural Time Series Data: Theory and Practice*. The MIT Press.
-- **Online Course:** [Udemy - Complete Neural Signal Processing and Analysis: Zero to Hero by Mike X Cohen](https://www.udemy.com/).
+- **Online Course:** [Udemy - Complete Neural Signal Processing and Analysis: Zero to Hero by Mike X Cohen](https://www.udemy.com/course/solved-challenges-ants/).
 
 ---
 
