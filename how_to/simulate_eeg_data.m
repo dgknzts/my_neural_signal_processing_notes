@@ -28,7 +28,7 @@ end
 
 
 % plot time and freq domain
-addpath(genpath('src'))
+addpath(genpath('src')) % add plot_simEEG function to the path
 plot_simEEG(EEG,2,2) % a basic function to plot different domains of the data.
 % data , channel to plot, figure
 
@@ -69,4 +69,4 @@ for chani=1:EEG.nbchan
     end
 end
 
-plot_simEEG(EEG,2,7)
+plot_simEEG(EEG,2,3)
