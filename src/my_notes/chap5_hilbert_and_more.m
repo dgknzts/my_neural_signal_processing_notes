@@ -161,7 +161,7 @@ title('Time-domain signal')
 
 
 % using MATLAB spectogram
-[powspect,frex,timevec] = spectrogram(signal,hann(200),150,500,srate);
+[powspect,frex,timevec] = spectrogram(signal,hann(500),500,1000,srate);
 
 subplot(4,1,2:4)
 contourf(timevec,frex,abs(powspect),40,'linecolor','none')
@@ -179,7 +179,7 @@ xlabel('Time (s)')
 title('Time-domain signal')
 
 n  = 500;
-nfft = 990000;
+nfft = 10000;
 hz = linspace(0,srate,nfft);
 winstep = 100;
 winindx = 1:winstep:length(signal)-n;
@@ -193,6 +193,8 @@ for i=1:length(winindx)
     
     % compute power in this snippet
     pw = abs(fft(datasnip, nfft)).^2;
+
+
     tf(i,1:length(hz)) = pw(1:length(hz));
     
     % center time point

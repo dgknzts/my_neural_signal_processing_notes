@@ -253,3 +253,82 @@ xlabel('Time (ms)'), ylabel('Data (z-score)')
 %   Laplacian. Then show ERPs from those channels. Why do time courses 
 %   from some channels look more similar than time courses from other
 %   channels?
+
+%% VIDEO: Phase-lag index
+
+N = 200;
+pfilled = .3;
+centphase = pi/2;
+
+% strength of clustering and phase angle, PLI shown in color
+phase_angles = linspace(centphase-pfilled*pi,centphase+pfilled*pi,N);
+
+
+%%% compute PLI:
+% "eulerize" the phase angle differences
+cdd = exp(1i*phase_angles);
+
+% project the phase angle differences onto the imaginary axis
+cdi = imag(cdd);
+
+% take the sign of those projections
+cdis = sign(cdi);
+
+% take the average sign
+cdism = mean(cdis);
+
+% we can about the magnitude of the average
+pli = abs(cdism);
+
+% for reference, compute ISPC
+ispc = abs(mean(cdd));
+
+figure(6), clf
+polarplot([zeros(1,N); phase_angles],[zeros(1,N); ones(1,N)],'k')
+title([ 'PLI = ' num2str(pli) ', ITPC = ' num2str(ispc) ])
+
+%% flesh out the space
+
+pfilledrange = linspace(0,1,40);
+centphases   = linspace(0,2*pi,30);
+
+% initialize
+pli = zeros(length(pfilledrange),length(centphases));
+ispc = zeros(length(pfilledrange),length(centphases));
+
+
+for pfilli=1:length(pfilledrange)
+    for centi=1:length(centphases)
+        
+        pfilled = pfilledrange(pfilli);
+        centphase = centphases(centi);
+        
+        % strength of clustering and phase angle, PLI shown in color
+        phase_angles = linspace(centphase-pfilled*pi,centphase+pfilled*pi,N);
+        
+        % eulerized phase angle differences
+        cdd  = exp(1i*phase_angles);
+        
+        % compute the rest of the PLI in one line
+        pli(pfilli,centi)  = abs(mean(sign(imag(cdd))));
+        
+        ispc(pfilli,centi) = abs(mean(cdd));
+        
+    end
+end
+
+
+figure(7), clf
+subplot(121)
+imagesc(centphases,pfilledrange,pli)
+axis xy, axis square
+ylabel('Proportion filled'), xlabel('Phase angle')
+title('PLI')
+
+subplot(122)
+imagesc(centphases,pfilledrange,ispc)
+axis xy, axis square
+ylabel('Proportion filled'), xlabel('Phase angle')
+title('ITPC')
+colormap hot
+colorbar('east')
