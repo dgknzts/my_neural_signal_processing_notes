@@ -17,11 +17,8 @@ truelabels = cat(1, ones(n1,1), 2*ones(n2,1) );
 % compute the observed condition difference
 idx_1 = (truelabels(:,1) == 1);
 idx_2 = (truelabels(:,1) == 2);
-true_conddif = mean(alldata(idx_2)) - mean(alldata(idx_1))
+true_conddif = mean(alldata(idx_2)) - mean(alldata(idx_1));
 
-%%% QUESTION: What is the expected mean difference?
-%             How does that compare to the empirical mean difference?
-% 
 
 %%
 
@@ -33,19 +30,8 @@ shuflabels = truelabels(randperm(length(truelabels)),1);
 % step 3: compute the mean difference of the shuffled labels
 idx_1 = (shuflabels(:,1) == 1);
 idx_2 = (shuflabels(:,1) == 2);
-shufconddif =   mean(alldata(idx_2)) - mean(alldata(idx_1))
+shufconddif =   mean(alldata(idx_2)) - mean(alldata(idx_1));
 
-
-% NOTE that the data have not changed; only the mapping of data to condition label.
-
-%%% QUESTION: How does the shuffled mean difference compare to the observed
-%             mean difference?
-% 
-% 
-%%% QUESTION: If you re-run this code, how similar are the results?
-% 
-% 
-% 
 
 
 %% creating a null-hypothesis (H0) distribution
@@ -73,17 +59,6 @@ legend({'Shuffled';'True'})
 set(gca,'xlim',[-1 1])
 xlabel('Mean value')
 ylabel('Count')
-
-%%% QUESTION: How reliable is the distribution?
-%             Re-run this code multiple times to observe.
-% 
-% 
-% 
-%%% QUESTION: How is the shape of the distribution affected by the number of
-%              iterations?
-%             Try re-running the code with very small and very large number
-%              of iterations. What do you think (qualitatively, based on
-%              this example) is a reasonable number of iterations?
 
 
 %% two methods for computing a p-value
