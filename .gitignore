@@ -1,0 +1,62 @@
+# MATLAB specific
+*.asv
+*.mat
+*.mex*
+*.mex
+*.m~
+*.slxc
+*.slx.autosave
+*.slx.r*
+*.slx~
+*.sldd
+*.slddc
+*.sldx
+*.sldx.autosave
+*.sldx~
+*.slprj/
+*.slx
+*.slxc
+*.slx.autosave
+*.slx.r*
+*.slx~
+*.sldd
+*.slddc
+*.sldx
+*.sldx.autosave
+*.sldx~
+*.slprj/
+
+# Ignore data directory
+src/data/
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db 
