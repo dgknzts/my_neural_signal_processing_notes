@@ -11,9 +11,9 @@
 
 % simulation parameters
 time  = -3:1/1000:3;
-ptime = -1.5324;  % peak time 
+ptime = -1.3131;  % peak time 
 ampl  = 30; % amplitude
-fwhm  = .9;
+fwhm  = 1;
 
 % Gaussian
 gwin = ampl* exp(-(4*log(2)*(time-ptime).^2) / fwhm^2);

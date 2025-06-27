@@ -4,12 +4,12 @@
 
 % noise varying in time
 % simulation details
-pnts  = 4567;
-srate =  987;
+pnts  = 1000;
+srate =  250;
 
 % signal parameters in Hz
 peakfreq = 10; % most frequent frequency
-fwhm     =  3; % bigger means frequency will vary more
+fwhm     =  1; % bigger means frequency will vary more
 % smaller for just the amplitude to vary
 
 % frequencies

@@ -5,8 +5,8 @@
 % M : length or distance from the origin (magnitude)
 % this formula describe a vector in a complex (polar) plane.
 % will be very useful later on interpreting fourier coefficients.
-M = 10;
-k = pi/6;
+M = 5;
+k = pi/3.22;
 
 meik = M*exp(1i*k);
 

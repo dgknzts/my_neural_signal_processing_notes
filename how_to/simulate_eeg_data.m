@@ -3,10 +3,10 @@
 % parameters
 EEG.srate  = 500; % sampling rate in Hz
 EEG.pnts   = 1500;
-EEG.trials = 30;
-EEG.nbchan = 23;
+EEG.trials = 100;
+EEG.nbchan = 64;
 
-sinefreq = 6.75; % in Hz
+sinefreq = 7.543; % in Hz
 
 % time vector
 EEG.times = (0:EEG.pnts-1)/EEG.srate;
@@ -29,7 +29,7 @@ end
 
 % plot time and freq domain
 addpath(genpath('src')) % add plot_simEEG function to the path
-plot_simEEG(EEG,2,2) % a basic function to plot different domains of the data.
+plot_simEEG(EEG,10,2) % a basic function to plot different domains of the data.
 % data , channel to plot, figure
 
 %% another example with some pink noise and transient frequency
