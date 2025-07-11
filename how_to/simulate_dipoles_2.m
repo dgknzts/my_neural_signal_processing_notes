@@ -1,11 +1,4 @@
-%%
-%     COURSE: Solved challenges in neural time series analysis
-%    SECTION: Multivariate components analysis
-%      VIDEO: Simulate multicomponent EEG data
-% Instructor: sincxpress.com
-%
 %% 
-
 % mat file containing EEG, leadfield and channel locations
 load emptyEEG
 
