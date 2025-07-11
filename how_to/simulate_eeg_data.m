@@ -5,8 +5,7 @@ EEG.srate  = 500; % sampling rate in Hz
 EEG.pnts   = 1500;
 EEG.trials = 100;
 EEG.nbchan = 64;
-
-sinefreq = 7.543; % in Hz
+sinefreq = 25; % in Hz
 
 % time vector
 EEG.times = (0:EEG.pnts-1)/EEG.srate;
@@ -16,7 +15,7 @@ for chani=1:EEG.nbchan
     for triali=1:EEG.trials
         % data as a sine wave
         % hint: instantaneous frequency via interpolated random numbers
-        freqmod = 10 + 10*interp1(rand(1,5),linspace(1,5,EEG.pnts));
+        freqmod = 15 + 5*interp1(rand(1,5),linspace(1,5,EEG.pnts));
         signal  = sin( 2*pi * ((EEG.times + cumsum(freqmod))/EEG.srate) );
 
         EEG.data(chani,:,triali) = signal; 
@@ -36,10 +35,9 @@ plot_simEEG(EEG,10,2) % a basic function to plot different domains of the data.
 % amount of noise
 noiseamp = .1;
 
-
 peaktime = 1; % seconds
 width    = .12;
-sinefreq = 7; % for sine wave
+sinefreq = 20; % for sine wave
 
 % create Gaussian taper
 gaus = exp( -(EEG.times-peaktime).^2 / (2*width^2) );
@@ -62,8 +60,7 @@ for chani=1:EEG.nbchan
         
         % inverse Fourier transform to create the noise
         noise = real(ifft(fc)) * EEG.pnts;
-        
-        
+       
         % data as signal + noise
         EEG.data(chani,:,triali) = cosw .* gaus + noiseamp*noise;
     end

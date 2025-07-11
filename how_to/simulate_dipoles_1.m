@@ -22,8 +22,6 @@
 % - Strength: HOW STRONG the activity is over time
 % - Forward Model: How brain activity projects to scalp electrodes
 
-fprintf('=== DIPOLE SIMULATION TUTORIAL ===\n\n');
-
 %% PART 2: BASIC SETUP
 % Let's start with the simplest possible example
 
