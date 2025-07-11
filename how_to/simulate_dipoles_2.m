@@ -3,8 +3,8 @@
 load emptyEEG
 
 % pick two dipoles
-diploc1 = 109;
-diploc2 = 409;
+diploc1 = 101;
+diploc2 = 201;
 
 % plot brain dipoles
 figure(1), clf, subplot(131)
@@ -67,7 +67,7 @@ end
 
 
 % plot data from a few channels
-if 1 % set to 0 for simulation-only
+if 0 % set to 0 for simulation-only
     plot_simEEG(EEG,31,2)
     plot_simEEG(EEG,18,3)
     plot_simEEG(EEG,10,4)
