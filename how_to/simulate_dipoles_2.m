@@ -1,8 +1,54 @@
-%% 
-% mat file containing EEG, leadfield and channel locations
+%% Demo: Finding focal dipoles for left occipital activity
+% Load data
 load emptyEEG
 
-% pick two dipoles
+%% Find focal dipole for PO7
+target_channel = 'Oz';
+
+% Method 1: Ratio of target/non-target strength
+[dipole_idx, score, sorted] = find_focal_dipole(lf, EEG.chanlocs, target_channel);
+
+fprintf('Most focal dipole for %s: #%d (focality score: %.2f)\n', ...
+    target_channel, dipole_idx, score);
+
+%% Visualize focal vs non-focal dipoles
+figure(1), clf
+
+% Plot most focal dipoles
+for i = 1:4
+    subplot(2, 4, i)
+    topoplotIndie(-lf.Gain(:, 1, sorted.indices(i)), EEG.chanlocs, ...
+        'numcontour', 0, 'electrodes', 'off');
+    title(sprintf('Focal #%d (score: %.2f)', i, sorted.scores(i)))
+end
+
+% Plot least focal (most global) dipoles
+for i = 1:4
+    subplot(2, 4, i+4)
+    idx = sorted.indices(end-i+1);
+    topoplotIndie(-lf.Gain(:, 1, idx), EEG.chanlocs, ...
+        'numcontour', 0, 'electrodes', 'off');
+    title(sprintf('Global #%d (score: %.2f)', i, sorted.scores(end-i+1)))
+end
+sgtitle('Focal (top) vs Global (bottom) dipoles')
+
+%% Include neighboring channels for more robust selection
+[dipole_idx2, score2, sorted2] = find_focal_dipole(lf, EEG.chanlocs, target_channel, ...
+    'n_neighbors', 3);
+
+fprintf('\nWith 3 neighbors: dipole #%d (score: %.2f)\n', dipole_idx2, score2);
+
+%% Multiple occipital channels
+occipital_channels = {'PO8', 'PO7'};
+[dipole_idx3, score3, sorted3] = find_focal_dipole(lf, EEG.chanlocs, occipital_channels);
+
+fprintf('\nFocal to [%s]: dipole #%d (score: %.2f)\n', ...
+    strjoin(occipital_channels, ', '), dipole_idx3, score3);
+
+%% mat file containing EEG, leadfield and channel locations
+load emptyEEG
+
+%% pick two dipoles
 diploc1 = 101;
 diploc2 = 201;
 
@@ -73,4 +119,3 @@ if 0 % set to 0 for simulation-only
     plot_simEEG(EEG,10,4)
 end
 
-%% done.

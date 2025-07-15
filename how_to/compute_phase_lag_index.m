@@ -1,4 +1,4 @@
-%% Inter-Site Phase Clustering (ISPC) Tutorial
+%% Inter-Site Phase Clustering (PLI) Tutorial
 % This script demonstrates how to compute phase synchronization between EEG channels
 % using the Inter-Site Phase Clustering method
 
@@ -6,10 +6,9 @@
 addpath("G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src")
 % Define simulation parameters
 sim_freq = 15;                       % Frequency in Hz
-sim_phaselag = 0.5 * 2*pi;            % Phase lag in radians
-dipole_1_loc = 32;                  % Index for dipole 1
-dipole_2_loc = 86;                  % Index for dipole 2
-% 32=PO7 -- 86=PO8 -- 8=Oz
+sim_phaselag = 0 * 2*pi;            % Phase lag in radians
+dipole_1_loc = 101;                  % Index for dipole 1
+dipole_2_loc = 201;                  % Index for dipole 2
 activation_win = [0 2];              % Activation window in seconds
 generate_plots = false;               % Generate plots (true) or not (false)
 
@@ -20,7 +19,7 @@ EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc,
 %% Create complex Morlet wavelet
 target_freq = 15; % Hz (tagged frequency)
 wavelet_time = -1:1/EEG.srate:1;
-wavelet_cycles = 10;
+wavelet_cycles = 3;
 
 % Gaussian width parameter
 s = wavelet_cycles / (2*pi*target_freq);
@@ -55,12 +54,12 @@ for chani = 1:EEG.nbchan
     end
 end
 
-%% Compute ISPC between all channel pairs
+%% Compute PLI between all channel pairs
 
 % define time windows
 tidx = dsearchn(EEG.times',[0 2]');
 
-ispc_matrix = zeros(EEG.nbchan, EEG.nbchan);
+PLI_matrix = zeros(EEG.nbchan, EEG.nbchan);
 
 for chan1 = 1:EEG.nbchan
     for chan2 = 1:EEG.nbchan
@@ -68,25 +67,25 @@ for chan1 = 1:EEG.nbchan
         phase_diff = phase_data(chan1, tidx(1):tidx(2), :) - phase_data(chan2, tidx(1):tidx(2), :);
         phase_diff = phase_diff(:);
 
-        % ISPC calculation
+        % PLI calculation
         complex_diff = exp(1i * phase_diff);
-        ispc_matrix(chan1, chan2) = abs(mean(complex_diff));
+        PLI_matrix(chan1, chan2) = abs(mean(sign(imag(complex_diff))));
     end
 end
 
 % Set diagonal to 1 (perfect synchronization with itself)
-ispc_matrix = ispc_matrix + eye(EEG.nbchan);
+%PLI_matrix = PLI_matrix + eye(EEG.nbchan);
 
-%% Visualize ISPC matrix
+%% Visualize PLI matrix
 figure('Position', [100, 100, 600, 500]);
 
-imagesc(ispc_matrix);
+imagesc(PLI_matrix);
 colorbar;
 %colormap('hot');
-caxis([0 0.1]);
+caxis([0 0.05]);
 xlabel('Channel');
 ylabel('Channel');
-title('Inter-Site Phase Clustering (ISPC) Matrix');
+title('Inter-Site Phase Clustering (PLI) Matrix');
 axis square;
 
 % Add grid for better visualization
