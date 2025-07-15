@@ -1,6 +1,7 @@
 %% Simulating EEG data with phase-lagged dipoles
 % Load empty EEG structure with leadfield
-load emptyEEG
+addpath("src");
+load emptyEEG.mat
 
 % Select two dipole locations
 diploc1 = 101;
@@ -143,8 +144,6 @@ topoplotIndie(amp_at_15Hz, EEG.chanlocs, 'numcontour', 0);
 hold on
 % Mark the highest amplitude channel
 topoplotIndie(amp_at_15Hz, EEG.chanlocs, 'electrodes', 'on');
-plot(EEG.chanlocs(max_chan).X, EEG.chanlocs(max_chan).Y, 'ko', ...
-     'MarkerSize', 12, 'MarkerFaceColor', 'white', 'LineWidth', 3)
 title(sprintf('Topography at 15 Hz\nMax channels: %d and %d', sorted_indices(1), sorted_indices(2)))
 colorbar
 
