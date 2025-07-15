@@ -6,7 +6,7 @@
 addpath("G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src")
 % Define simulation parameters
 sim_freq = 15;                       % Frequency in Hz
-sim_phaselag = 0.25 * 2*pi;            % Phase lag in radians
+sim_phaselag = 0.5 * 2*pi;            % Phase lag in radians
 dipole_1_loc = 101;                  % Index for dipole 1
 dipole_2_loc = 201;                  % Index for dipole 2
 activation_win = [0 2];              % Activation window in seconds
@@ -14,6 +14,7 @@ generate_plots = false;               % Generate plots (true) or not (false)
 
 % Call the function to generate data
 EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, activation_win, generate_plots);
+
 
 %% Create complex Morlet wavelet
 target_freq = 15; % Hz (tagged frequency)
