@@ -1,6 +1,5 @@
 # MATLAB specific
 *.asv
-*.mat
 *.mex*
 *.mex
 *.m~
