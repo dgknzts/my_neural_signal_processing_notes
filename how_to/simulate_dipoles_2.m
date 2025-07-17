@@ -3,7 +3,7 @@
 load emptyEEG
 
 %% Find focal dipole for PO7
-target_channel = 'Oz';
+target_channel = 'PO8';
 
 % Method 1: Ratio of target/non-target strength
 [dipole_idx, score, sorted] = find_focal_dipole(lf, EEG.chanlocs, target_channel);
@@ -39,7 +39,7 @@ sgtitle('Focal (top) vs Global (bottom) dipoles')
 fprintf('\nWith 3 neighbors: dipole #%d (score: %.2f)\n', dipole_idx2, score2);
 
 %% Multiple occipital channels
-occipital_channels = {'PO8', 'PO7'};
+occipital_channels = {'Oz', 'O2', 'O1'};
 [dipole_idx3, score3, sorted3] = find_focal_dipole(lf, EEG.chanlocs, occipital_channels);
 
 fprintf('\nFocal to [%s]: dipole #%d (score: %.2f)\n', ...
