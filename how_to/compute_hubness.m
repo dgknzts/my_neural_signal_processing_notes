@@ -18,7 +18,7 @@ EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc,
 
 %% Connectivity Analysis Parameters
 target_freq = 15;
-wavelet_time = -0.7:1/EEG.srate:0.7;  % 1.4 seconds total
+wavelet_time = -0.8:1/EEG.srate:0.8;  % 1.4 seconds total
 wavelet_cycles = 12;
 time_window = [0 2];
 
