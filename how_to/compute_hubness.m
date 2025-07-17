@@ -7,18 +7,19 @@ addpath("G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src")
 
 %% Generate simulated EEG data
 sim_freq = 15;
-sim_phaselag = 0.25* 2*pi;
+sim_phaselag = 0.25 * 2*pi;
 dipole_1_loc = 32;  % PO7
 dipole_2_loc = 86;  % PO8
 activation_win = [0 2];
 generate_plots = false;
 
-EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, activation_win, generate_plots);
+EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, ...
+    activation_win, 'noise_level', 100, 'signal_amp', [2, 2], 'show_plots', generate_plots);
 
 %% Connectivity Analysis Parameters
 target_freq = 15;
-wavelet_time = -1:1/EEG.srate:1;
-wavelet_cycles = 8;
+wavelet_time = -0.7:1/EEG.srate:0.7;  % 1.4 seconds total
+wavelet_cycles = 12;
 time_window = [0 2];
 
 % Gaussian width parameter
@@ -26,6 +27,10 @@ s = wavelet_cycles / (2*pi*target_freq);
 
 % Complex Morlet wavelet
 wavelet = exp(2i*pi*target_freq*wavelet_time) .* exp(-wavelet_time.^2/(2*s^2));
+
+figure;
+subplot(211); plot(wavelet_time, real(wavelet)); title('Time domain');
+subplot(212); plot(abs(fft(wavelet))); title('Frequency domain');
 
 % Convolution parameters
 nwave = length(wavelet);
@@ -106,7 +111,7 @@ switch thresh_method
     case 'percentile'
         threshold = thresh_percentile;
 end
-threshold = 0.078;
+%threshold = 0.078;
 % Create binary adjacency matrix
 adj_matrix = conn_matrix > threshold;
 
