@@ -8,7 +8,7 @@ frex  = 4.8;         % frequency of wavelet, in Hz
 sine_wave = cos(2 * pi * time * frex);
 
 % create Gaussian window
-fwhm = .5; % width of the Gaussian in seconds
+fwhm = .2; % width of the Gaussian in seconds
 gaus_win = exp( (-4*log(2)*time.^2) / (fwhm^2) );
 
 % now create Morlet wavelet

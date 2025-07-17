@@ -6,7 +6,7 @@
 addpath("G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src")
 % Define simulation parameters
 sim_freq = 15;                       % Frequency in Hz
-sim_phaselag = 0.5 * 2*pi;            % Phase lag in radians
+sim_phaselag = 0 * 2*pi;            % Phase lag in radians
 dipole_1_loc = 32;                  % Index for dipole 1
 dipole_2_loc = 86;                  % Index for dipole 2
 % 32=PO7 -- 86=PO8 -- 8=Oz
@@ -15,7 +15,12 @@ generate_plots = false;               % Generate plots (true) or not (false)
 
 % Call the function to generate data
 EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, activation_win, generate_plots);
+%% Apply average re-referencing
+% Compute average across channels for each time point and trial
+avg_ref = mean(EEG.data, 1);
 
+% Subtract average from each channel
+EEG.data = bsxfun(@minus, EEG.data, avg_ref);
 
 %% Create complex Morlet wavelet
 target_freq = 15; % Hz (tagged frequency)
@@ -83,7 +88,7 @@ figure('Position', [100, 100, 600, 500]);
 imagesc(ispc_matrix);
 colorbar;
 %colormap('hot');
-caxis([0 0.1]);
+caxis([0 0.3]);
 xlabel('Channel');
 ylabel('Channel');
 title('Inter-Site Phase Clustering (ISPC) Matrix');
