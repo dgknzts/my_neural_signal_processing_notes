@@ -1,5 +1,6 @@
 %% Demo: Finding focal dipoles for left occipital activity
 % Load data
+addpath 'G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src'
 load emptyEEG
 
 %% Find focal dipole for PO7
