@@ -27,6 +27,7 @@
 
 # Ignore data directory
 src/data/
+how_to/src/ICAsimulated_EEG_freq15Hz_phase0_dip56_32.set
 
 # Python specific
 __pycache__/

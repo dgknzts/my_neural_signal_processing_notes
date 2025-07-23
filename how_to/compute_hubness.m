@@ -16,8 +16,6 @@ dipole_2_loc =  32;
 activation_win = [0 2];
 generate_plots = false;
 
-
-
 EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, ...
     activation_win, 'noise_level', 100, 'signal_amp', [2, 2], 'show_plots', generate_plots);
 

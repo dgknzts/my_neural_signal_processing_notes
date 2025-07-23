@@ -2,7 +2,7 @@
 % This script demonstrates how to compute phase synchronization between EEG channels
 % using the Inter-Site Phase Clustering method
 
-%clear; close all;
+clear; close all;
 addpath("G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src")
 % Define simulation parameters
 sim_freq = 15;                       % Frequency in Hz
@@ -13,8 +13,10 @@ dipole_2_loc = 86;                  % Index for dipole 2
 activation_win = [0 2];              % Activation window in seconds
 generate_plots = false;               % Generate plots (true) or not (false)
 
-% Call the function to generate data
-EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, activation_win, generate_plots);
+
+EEG = simulate_phaseLag_data(sim_freq, sim_phaselag, dipole_1_loc, dipole_2_loc, ...
+    activation_win, 'noise_level', 100, 'signal_amp', [2, 2], 'show_plots', generate_plots);
+
 %% Apply average re-referencing
 % Compute average across channels for each time point and trial
 avg_ref = mean(EEG.data, 1);
@@ -88,7 +90,7 @@ figure('Position', [100, 100, 600, 500]);
 imagesc(ispc_matrix);
 colorbar;
 %colormap('hot');
-caxis([0 0.3]);
+caxis([0 0.4]);
 xlabel('Channel');
 ylabel('Channel');
 title('Inter-Site Phase Clustering (ISPC) Matrix');

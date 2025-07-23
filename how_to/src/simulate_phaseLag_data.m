@@ -83,7 +83,7 @@ switch lower(window_type)
 end
 
 %% Data Simulation
-rng(1); % Reproducibility
+%rng(1); % Reproducibility
 for triali = 1:EEG.trials
     
     % Background dipole activity (spatially uncorrelated noise)

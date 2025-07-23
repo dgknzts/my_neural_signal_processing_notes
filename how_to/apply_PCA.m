@@ -234,25 +234,4 @@ legend({'Phase-locked PC1', 'Total PC1'}, 'Location', 'best')
 set(gca, 'xlim', [-200 1300])
 grid on
 
-% Add vertical line at stimulus onset
-line([0 0], get(gca, 'ylim'), 'color', 'k', 'linestyle', '--', 'linewidth', 1)
-
-%% STEP 9: Summary and Interpretation
-fprintf('\n=== TUTORIAL SUMMARY ===\n')
-fprintf('\nKEY FINDINGS:\n')
-fprintf('1. Phase-locked PCA (ERP): PC1 explains %.1f%% of variance\n', L_PL_pct(1))
-fprintf('2. Total PCA (all trials): PC1 explains %.1f%% of variance\n', L_TT_pct(1))
-
-fprintf('\nINTERPRETATION:\n')
-fprintf('• Phase-locked components show consistent, stimulus-locked activity\n')
-fprintf('• Total components capture both evoked and induced activity\n')
-fprintf('• Lower variance in phase-locked PCA suggests high trial-to-trial consistency\n')
-fprintf('• Topographical differences reveal different spatial patterns\n')
-
-fprintf('\nNEXT STEPS:\n')
-fprintf('• Examine more components beyond PC1\n')
-fprintf('• Compare component time courses across conditions\n')
-fprintf('• Use components for source analysis or connectivity\n')
-fprintf('• Consider time-frequency decomposition of components\n\n')
-
-fprintf('Tutorial completed successfully!\n')
+%.
