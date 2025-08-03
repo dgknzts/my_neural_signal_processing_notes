@@ -6,7 +6,7 @@ clear; close all;
 addpath("G:\My Drive\Projects\signal_processing_mike_cohen\how_to\src")
 % Define simulation parameters
 sim_freq = 15;                       % Frequency in Hz
-sim_phaselag = 0 * 2*pi;            % Phase lag in radians
+sim_phaselag = 0.5 * 2*pi;            % Phase lag in radians
 dipole_1_loc = 32;                  % Index for dipole 1
 dipole_2_loc = 86;                  % Index for dipole 2
 % 32=PO7 -- 86=PO8 -- 8=Oz

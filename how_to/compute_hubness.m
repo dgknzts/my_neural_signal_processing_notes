@@ -114,7 +114,7 @@ switch thresh_method
     case 'percentile'
         threshold = thresh_percentile;
 end
-threshold = 0.141;
+
 % Create binary adjacency matrix
 adj_matrix = conn_matrix > threshold;
 
