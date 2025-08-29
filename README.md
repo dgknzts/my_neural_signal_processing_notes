@@ -1,44 +1,16 @@
-# My Neural Signal Processing Notes
+# EEG Signal Processing Notebook
 
-This repository serves as a personal resource for EEG data analysis. It is designed to help me quickly revisit and apply various concepts related to neural signal processing whenever needed. 
-
-If I need to perform or review specific techniques, I can refer to the **how_to** section for practical or theoretical guidance and explanations.
-
----
+This is my personal notebook for EEG data analysis. I use it to keep track of different signal processing techniques and methods I've learned.
 
 ## Resources
-All of the codes in this repository are inspired by the content provided by **Mike X. Cohen**. For a deeper understanding of neural signal processing, I recommend exploring the following resources:
 
-- **Book:** Cohen, M. X. (2014). *Analyzing Neural Time Series Data: Theory and Practice*. The MIT Press.
-- **Online Course:** [Udemy - Complete Neural Signal Processing and Analysis: Zero to Hero by Mike X Cohen](https://www.udemy.com/course/solved-challenges-ants/).
+- Cohen, M. X. (2014). *Analyzing Neural Time Series Data: Theory and Practice*. The MIT Press.
+- [Udemy - Complete Neural Signal Processing and Analysis: Zero to Hero by Mike X Cohen](https://www.udemy.com/course/solved-challenges-ants/)
+- Cohen, M. X. (2022). A tutorial on generalized eigendecomposition for denoising, contrast enhancement, and dimension reduction in multichannel electrophysiology. *NeuroImage*, 247, 118809. https://doi.org/10.1016/j.neuroimage.2021.118809
+- Kayser, J., & Tenke, C. E. (2015). Issues and considerations for using the scalp surface Laplacian in EEG/ERP research: A tutorial review. *International Journal of Psychophysiology*, 97(3), 189–209. https://doi.org/10.1016/j.ijpsycho.2015.04.012
+- Haufe, S., Meinecke, F., Görgen, K., Dähne, S., Haynes, J.-D., Blankertz, B., & Bießmann, F. (2014). On the interpretation of weight vectors of linear models in multivariate neuroimaging. *NeuroImage*, 87, 96–110. https://doi.org/10.1016/j.neuroimage.2013.10.067
+- Chiarion, G., Sparacino, L., Antonacci, Y., Faes, L., & Mesin, L. (2023). Connectivity Analysis in EEG Data: A Tutorial Review of the State of the Art and Emerging Trends. *Bioengineering*, 10(3), Article 3. https://doi.org/10.3390/bioengineering10030372
 
----
-
-## Repository Structure
-- **`src/`**: Contains practice scripts and sample datasets used during the course to apply neural signal processing techniques.
-  - `data/`: Sample datasets and example data files
-  - `my_notes/`: Personal notes and implementations
-- **`how_to/`**: Provides scripts and code snippets demonstrating how to implement specific EEG and signal processing concepts. Each script focuses on a different technique and includes explanations on how and why it is used.
-  - `src/`: Additional source code and utilities
-  - Various simulation scripts (e.g., `simulate_eeg_data.m`, `simulate_sine_waves.m`, etc.)
-
-## Setup and Requirements
-- MATLAB (R2019b or later recommended)
-- Required MATLAB toolboxes:
-  - Signal Processing Toolbox
-  - Statistics and Machine Learning Toolbox
-  - (Optional) EEGLAB toolbox
-
-## Getting Started
-1. Clone this repository
-2. Open MATLAB and navigate to the repository directory
-3. Start with the examples in the `how_to` directory to understand basic concepts
-4. Use the scripts in `src` for your own implementations
-
-## Contributing
-This is a personal repository for learning and reference. Feel free to fork and adapt the code for your own use.
-
-## License
-This repository is for educational purposes only. All code is based on the teachings of Mike X. Cohen and should be used in accordance with the original course materials' terms of use.
-
----
+## Structure
+- `src/`: Practice scripts and sample data
+- `how_to/`: Code examples for different EEG processing techniques
